@@ -1,7 +1,8 @@
 // Naikkan nomor versi setiap kali file app diubah (alvian-v1 → alvian-v2, dst.)
-const CACHE = "alvian-v1";
+const CACHE = "alvian-v2";
 const FILES = ["./", "index.html", "config.js", "manifest.json",
-               "icons/icon-192.png", "icons/icon-512.png"];
+               "icons/icon-192.png", "icons/icon-512.png", "icons/maskable-512.png",
+               "icons/apple-touch-icon.png", "icons/favicon-48.png", "icons/logo.png"];
 
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(FILES)));

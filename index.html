@@ -6,8 +6,8 @@
   <title>Alvian Heating - Data Penjualan</title>
   <meta name="theme-color" content="#0b4f9f">
   <link rel="manifest" href="manifest.json">
-  <link rel="icon" href="icons/icon-192.png">
-  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="icon" type="image/png" href="icons/favicon-48.png">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="Alvian">
@@ -55,7 +55,9 @@ p{margin:0}
   border-bottom:1px solid var(--line);
 }
 .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:1rem;flex:1;min-width:0}
-.logo{width:34px;height:34px;border-radius:10px;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.8rem;flex:none}
+.logo{width:46px;height:34px;display:flex;align-items:center;justify-content:center;flex:none}
+.logo img{width:100%;height:100%;object-fit:contain;display:block}
+.login .logo{width:96px;height:64px}
 .judul-mobile{display:none;font-weight:800;font-size:1.15rem}
 
 /* TAB DENGAN DOT YANG SUDAH DIHAPUS */
@@ -274,7 +276,7 @@ tbody tr:nth-child(n+7),.rank-item:nth-child(n+7){animation-delay:130ms}
 <!-- ================= LOGIN ================= -->
 <div id="layarLogin" class="login-wrap" style="display:none">
   <div class="login">
-    <div class="logo">AH</div>
+    <div class="logo"><img src="icons/logo.png" alt="Logo Alvian Heating"></div>
     <h2>🔒 Alvian Heating</h2>
     <p class="sub" style="margin:6px 0 20px">Buka link undangan dari admin, atau masukkan kode undangan di sini.</p>
     <div class="ios-hint" id="iosHint">
@@ -291,7 +293,7 @@ tbody tr:nth-child(n+7),.rank-item:nth-child(n+7){animation-delay:130ms}
 <div id="app" style="display:none">
 
   <header class="topbar">
-    <div class="brand"><span class="logo">AH</span><span>Alvian Heating</span></div>
+    <div class="brand"><span class="logo"><img src="icons/logo.png" alt=""></span><span>Alvian Heating</span></div>
     <div class="judul-mobile" id="judulMobile">Alvian Heating</div>
 
     <!-- TAB NAVIGASI TANPA DOT -->
