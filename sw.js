@@ -1,5 +1,5 @@
 // Naikkan nomor versi setiap kali file app diubah (alvian-v1 → alvian-v2, dst.)
-const CACHE = "alvian-v5";
+const CACHE = "alvian-v8";
 const FILES = ["./", "index.html", "config.js", "manifest.json",
                "icons/icon-192.png", "icons/icon-512.png", "icons/maskable-512-v2.png",
                "icons/apple-touch-icon.png", "icons/favicon-48.png", "icons/logo.png"];

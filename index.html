@@ -267,7 +267,7 @@ h2.sub-judul{margin:0;font-size:1rem;font-weight:800}
 .kartu-sk{background:#fff;border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:10px;box-shadow:var(--sh-1)}
 /* tabel (laptop) */
 .tbl-wrap{overflow-x:auto}
-.tbl{border-collapse:collapse;width:100%;min-width:760px;font-size:.875rem}
+.tbl{border-collapse:collapse;width:100%;min-width:880px;font-size:.875rem}
 .tbl th{text-align:left;padding:12px 14px;font-size:.75rem;font-weight:700;color:var(--ink-3);background:#f5f7fb;white-space:nowrap}
 .tbl th:first-child,.tbl td:first-child{padding-left:22px}
 .tbl th:last-child,.tbl td:last-child{padding-right:22px}
@@ -278,6 +278,8 @@ h2.sub-judul{margin:0;font-size:1rem;font-weight:800}
 .tbl tbody tr.anim-in{animation-name:naikRow}
 @keyframes naikRow{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 .ta-r,.tbl th.ta-r{text-align:right}
+.tbl td:nth-child(4){min-width:280px;width:42%}
+.tbl td:nth-child(3){min-width:150px;max-width:260px;white-space:normal}
 .nowrap{white-space:nowrap}
 .paginasi{display:flex;align-items:center;justify-content:space-between;gap:8px}
 .paginasi .lbl-hal{font-size:.875rem;font-weight:700;color:var(--ink-2);text-align:center}
@@ -404,7 +406,7 @@ h2.sub-judul{margin:0;font-size:1rem;font-weight:800}
    LAPTOP
    ========================================================= */
 @media (min-width:900px){
-  .topbar-in{padding:12px 24px}
+  .topbar-in{max-width:none;padding:12px clamp(24px,2.4vw,48px)}
   .brand-name{font-size:1.125rem}
   .brand-name .br-m{display:none}
   .brand-logo{width:52px;height:40px;border-radius:13px}
@@ -412,17 +414,15 @@ h2.sub-judul{margin:0;font-size:1rem;font-weight:800}
   .tabs{display:flex}
   .ib-logout{width:auto;padding:0 14px}
   .ib-logout .lbl-d{display:inline}
-  .wrap{padding:24px 24px 48px}
+  .wrap{max-width:none;padding:24px clamp(24px,2.4vw,48px) 48px}
   .bottomnav{display:none}
   .toast{bottom:28px}
   .d-only{display:inline-flex !important}
   .m-only{display:none !important}
   .search-grid{flex-direction:row;align-items:flex-start;gap:20px}
-  .filter-card{flex:0 0 340px;position:sticky;top:88px;border-radius:24px;padding:22px}
-  .btn-filter{display:none}
-  .more{grid-template-rows:1fr !important;margin-top:0 !important}
-  .more-in{opacity:1 !important;transform:none !important;padding:0;background:transparent}
-  .more-in .inp{background:var(--field)}
+  .filter-card{flex:0 0 clamp(320px,21vw,400px);position:sticky;top:88px;border-radius:24px;padding:22px;max-height:calc(100vh - 112px);overflow:auto}
+  .cari-box .inp{height:50px}
+  .btn-filter{height:50px}
   .hasil{flex:1;background:#fff;border-radius:24px;box-shadow:var(--sh-1);gap:0;overflow:hidden}
   .hasil-head{padding:18px 22px}
   .hasil-head .jml b{font-size:1.375rem}
@@ -449,6 +449,16 @@ h2.sub-judul{margin:0;font-size:1rem;font-weight:800}
   .wrap{padding:24px 32px 48px}
   .filter-card{flex-basis:360px}
   .tbl .col-brg{min-width:360px}
+}
+@media (min-width:1800px){
+  .filter-card{flex-basis:400px}
+  .tbl{font-size:.9375rem}
+}
+/* Laptop kecil (900–1199px): filter di atas, tabel selebar layar */
+@media (min-width:900px) and (max-width:1199px){
+  .search-grid{flex-direction:column;align-items:stretch}
+  .filter-card{flex:none;position:static;max-height:none}
+  .more-in{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
 }
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important;scroll-behavior:auto !important}
@@ -628,7 +638,7 @@ h2.sub-judul{margin:0;font-size:1rem;font-weight:800}
           <div class="tbl-wrap" id="wrapUtama">
             <table class="tbl">
               <thead><tr>
-                <th>Tanggal</th><th>Nomer faktur</th><th>Customer</th><th class="col-brg">Barang &amp; detail ukuran</th><th class="ta-r">Qty</th><th class="ta-r">Nilai</th>
+                <th>Tanggal</th><th>Nomer faktur</th><th>Customer</th><th class="col-brg">Barang &amp; detail ukuran</th><th class="ta-r">Qty</th><th class="ta-r">Harga satuan</th><th class="ta-r">Total</th>
               </tr></thead>
               <tbody id="hasilTabel"></tbody>
             </table>
@@ -998,7 +1008,7 @@ function gagalServer(pesan){
   el("jmlBaris").textContent="0";
   var t=pesan||"Gagal mengambil data. Cek koneksi internet lalu tekan tombol refresh.";
   el("hasilKartu").innerHTML=kotakKosong("wifi",t);
-  el("hasilTabel").innerHTML='<tr><td colspan="6" style="padding:40px;text-align:center;color:var(--ink-3)">'+esc(t)+'</td></tr>';
+  el("hasilTabel").innerHTML='<tr><td colspan="7" style="padding:40px;text-align:center;color:var(--ink-3)">'+esc(t)+'</td></tr>';
   toast("Gagal terhubung ke server.");
 }
 function setMemuat(on){
@@ -1009,7 +1019,7 @@ function setMemuat(on){
   for(var i=0;i<4;i++){
     k+='<div class="kartu-sk"><div style="display:flex;justify-content:space-between;gap:20px"><div class="sk" style="height:16px;width:48%"></div><div class="sk" style="height:16px;width:24%"></div></div>'+
        '<div class="sk" style="height:12px;width:82%"></div><div style="display:flex;gap:6px"><div class="sk" style="height:24px;width:80px"></div><div class="sk" style="height:24px;width:110px"></div><div class="sk" style="height:24px;width:52px"></div></div></div>';
-    r+='<tr>'+[90,110,130,260,30,90].map(function(w){return '<td><div class="sk" style="height:14px;width:'+w+'px;max-width:100%"></div></td>'}).join("")+'</tr>';
+    r+='<tr>'+[90,110,130,260,30,90,90].map(function(w){return '<td><div class="sk" style="height:14px;width:'+w+'px;max-width:100%"></div></td>'}).join("")+'</tr>';
   }
   el("hasilKartu").innerHTML=k; el("hasilTabel").innerHTML=r;
 }
@@ -1105,7 +1115,7 @@ function renderHapus(pesan){
           '<input type="checkbox" data-i="'+i+'"'+(hapusPilih[i]?" checked":"")+'>'+
           '<span class="hp-teks"><span class="atas"><span>'+esc(o.cust)+'</span><span class="nowrap">'+rp(o.omset)+'</span></span>'+
           '<span class="brg">'+esc(o.brg)+'</span>'+
-          '<span class="ket">'+esc(tglRapi(o.iso))+' · '+esc(o.faktur||"-")+' · Qty '+nf(o.qty)+'</span></span></label>';
+          '<span class="ket">'+esc(tglRapi(o.iso))+' · '+esc(o.faktur||"-")+' · Qty: '+nf(o.qty)+'</span></span></label>';
       }).join("")+'</div></div>';
   }
   perbaruiTombolHapus();
@@ -1204,7 +1214,7 @@ function filterData(){
   if(!DATA.length){
     el("jmlBaris").textContent="0";
     el("hasilKartu").innerHTML=kotakKosong("inbox","Belum ada data penjualan.");
-    el("hasilTabel").innerHTML='<tr><td colspan="6" style="padding:40px;text-align:center;color:var(--ink-3)">Belum ada data penjualan.</td></tr>';
+    el("hasilTabel").innerHTML='<tr><td colspan="7" style="padding:40px;text-align:center;color:var(--ink-3)">Belum ada data penjualan.</td></tr>';
     el("nomorHalaman").textContent="Halaman 1 dari 1"; el("btnPrev").disabled=true; el("btnNext").disabled=true;
     return;
   }
@@ -1222,7 +1232,7 @@ function filterData(){
 function renderBaris(list){
   if(!list.length){
     el("hasilKartu").innerHTML=kotakKosong("search","Tidak ada data yang cocok dengan filter ini.");
-    el("hasilTabel").innerHTML='<tr><td colspan="6" style="padding:40px;text-align:center;color:var(--ink-3)">Tidak ada data yang cocok dengan filter ini.</td></tr>';
+    el("hasilTabel").innerHTML='<tr><td colspan="7" style="padding:40px;text-align:center;color:var(--ink-3)">Tidak ada data yang cocok dengan filter ini.</td></tr>';
     return;
   }
   el("hasilKartu").innerHTML=list.map(function(o,i){
@@ -1233,15 +1243,17 @@ function renderBaris(list){
       '<button type="button" class="kartu-brg" data-brg="'+kb+'">'+esc(o.brg)+'</button>'+
       '<div class="tags"><span class="tag">'+esc(o.iso?tglRapi(o.iso):(o.r[0]||"-"))+'</span>'+
       '<span class="tag tag-fk">'+esc(o.faktur||"-")+'</span>'+
-      '<span class="tag tag-qty">Qty '+nf(o.qty)+'</span></div></article>';
+      '<span class="tag tag-qty">Qty: '+nf(o.qty)+'</span>'+
+      '<span class="tag">@ '+rp(hargaSatuan(o))+'</span></div></article>';
   }).join("");
   el("hasilTabel").innerHTML=list.map(function(o,i){
     return '<tr class="anim-in" style="--i:'+Math.min(i,12)+'">'+
       '<td class="nowrap" style="color:var(--ink-2)">'+esc(o.iso?tglRapi(o.iso):(o.r[0]||"-"))+'</td>'+
       '<td class="nowrap"><span class="tag tag-fk">'+esc(o.faktur||"-")+'</span></td>'+
-      '<td class="nowrap" style="font-weight:700"><button type="button" class="link" data-cust="'+esc(bersihkanNama(o.cust).toUpperCase())+'">'+esc(o.cust)+'</button></td>'+
+      '<td style="font-weight:700"><button type="button" class="link" data-cust="'+esc(bersihkanNama(o.cust).toUpperCase())+'">'+esc(o.cust)+'</button></td>'+
       '<td class="col-brg" style="color:var(--ink-2)"><button type="button" class="link" data-brg="'+esc(kunciPersis(o.brg))+'">'+esc(o.brg)+'</button></td>'+
       '<td class="ta-r"><span class="tag tag-qty">'+nf(o.qty)+'</span></td>'+
+      '<td class="ta-r nowrap" style="color:var(--ink-2)">'+rp(hargaSatuan(o))+'</td>'+
       '<td class="ta-r nowrap" style="font-weight:800">'+rp(o.omset)+'</td></tr>';
   }).join("");
 }
@@ -1565,7 +1577,7 @@ function bukaCustomer(kunci){
       '<div class="hasil-head" style="padding:0"><p class="jml"><b>'+rows.length+'</b> baris riwayat belanja</p>'+
       '<button type="button" class="btn btn-soft btn-sm" id="btnHistUrut">'+ic("sort")+'<span>Terbaru</span></button></div>'+
       '<div class="kartu-list" id="histKartu"></div>'+
-      '<div class="tbl-wrap"><table class="tbl" style="min-width:640px"><thead><tr><th>Tanggal</th><th>Nomer faktur</th><th>Barang &amp; detail ukuran</th><th class="ta-r">Qty</th><th class="ta-r">Nilai</th></tr></thead><tbody id="histTabel"></tbody></table></div>'+
+      '<div class="tbl-wrap"><table class="tbl" style="min-width:760px"><thead><tr><th>Tanggal</th><th>Nomer faktur</th><th>Barang &amp; detail ukuran</th><th class="ta-r">Qty</th><th class="ta-r">Harga satuan</th><th class="ta-r">Total</th></tr></thead><tbody id="histTabel"></tbody></table></div>'+
       '<div class="paginasi" style="padding:0;border:0"><button type="button" class="pg" id="histPrev" aria-label="Halaman sebelumnya">'+ic("kiri")+'<span>Sebelumnya</span></button>'+
       '<span class="lbl-hal" id="histInfo"></span>'+
       '<button type="button" class="pg pg-next" id="histNext" aria-label="Halaman selanjutnya"><span>Selanjutnya</span>'+ic("kanan")+'</button></div>'+
@@ -1586,13 +1598,14 @@ function renderHist(){
     return '<article class="kartu anim-in" style="--i:'+i+';box-shadow:none;background:var(--field);border:1px solid var(--line-3)">'+
       '<div class="kartu-atas"><button type="button" class="kartu-brg" style="font-weight:700;color:var(--ink)" data-brg="'+esc(kunciPersis(o.brg))+'">'+esc(o.brg)+'</button>'+
       '<span class="kartu-nilai">'+rp(o.omset)+'</span></div>'+
-      '<div class="tags"><span class="tag" style="background:#fff">'+esc(o.iso?tglRapi(o.iso):(o.r[0]||"-"))+'</span><span class="tag tag-fk">'+esc(o.faktur||"-")+'</span><span class="tag tag-qty">Qty '+nf(o.qty)+'</span></div></article>';
+      '<div class="tags"><span class="tag" style="background:#fff">'+esc(o.iso?tglRapi(o.iso):(o.r[0]||"-"))+'</span><span class="tag tag-fk">'+esc(o.faktur||"-")+'</span><span class="tag tag-qty">Qty: '+nf(o.qty)+'</span><span class="tag" style="background:#fff">@ '+rp(hargaSatuan(o))+'</span></div></article>';
   }).join("");
   el("histTabel").innerHTML=pot.map(function(o,i){
     return '<tr class="anim-in" style="--i:'+i+'"><td class="nowrap" style="color:var(--ink-2)">'+esc(o.iso?tglRapi(o.iso):(o.r[0]||"-"))+'</td>'+
       '<td class="nowrap"><span class="tag tag-fk">'+esc(o.faktur||"-")+'</span></td>'+
       '<td><button type="button" class="link" data-brg="'+esc(kunciPersis(o.brg))+'">'+esc(o.brg)+'</button></td>'+
       '<td class="ta-r"><span class="tag tag-qty">'+nf(o.qty)+'</span></td>'+
+      '<td class="ta-r nowrap" style="color:var(--ink-2)">'+rp(hargaSatuan(o))+'</td>'+
       '<td class="ta-r nowrap" style="font-weight:800">'+rp(o.omset)+'</td></tr>';
   }).join("");
   el("histInfo").textContent="Halaman "+histHal+" dari "+totalHal;
